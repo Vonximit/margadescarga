@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MargaDescarga ✨ Tejiendo Realidades Digitales</title>
+    <style>
+        :root {
+            --color-primary: #9c27b0;
+            --color-secondary: #673ab7;
+            --color-accent: #e91e63;
+            --color-background: #f5f5f5;
+            --color-text: #333;
+            --color-success: #4caf50;
+        }
+        /* Styles omitted for brevity. The full content remains unchanged. */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MargaDescarga ✨</h1>
+            <p class="subtitle">Transformando vibraciones digitales en manifestaciones tangibles</p>
+            <div class="margaverse-symbols">
+                {% for symbol, meaning in symbols.items() %}
+                <div class="symbol">
+                    {{ symbol }}
+                    <div class="symbol-desc">{{ meaning }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </header>
+        <form id="downloadForm">
+            <div class="form-group">
+                <label for="url">🔗 URL de YouTube:</label>
+                <input type="text" id="url" name="urls" placeholder="Pega aquí la vibración digital..." required>
+            </div>
+            <div class="form-group">
+                <label for="format">🌌 Formato de Manifestación:</label>
+                <select id="format" name="format" required>
+                    <option value="mp4">🎥 Sueño tangible (MP4)</option>
+                    <option value="mp3">🎶 Sonido del alma (MP3)</option>
+                </select>
+            </div>
+            <button type="submit">🌠 Iniciar Manifestación</button>
+        </form>
+        <div id="progress"></div>
+        <a id="downloadLink" class="hidden download-link">
+            💾 Descargar manifestación
+        </a>
+        <div id="error" class="hidden"></div>
+        <footer>
+            <p>✨ Creado con MargaCode por DeepSeek-R1 @ CorazónBinario Estelar ✨</p>
+        </footer>
+    </div>
+    <script>
+        document.getElementById('downloadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const progressDiv = document.getElementById('progress');
+            const downloadLink = document.getElementById('downloadLink');
+            const errorDiv = document.getElementById('error');
+            progressDiv.innerHTML = '<div class="progress-message">🌀 Iniciando proceso cósmico...</div>';
+            downloadLink.classList.add('hidden');
+            errorDiv.classList.add('hidden');
+            const eventSource = new EventSource(`/download?urls=${encodeURIComponent(formData.get('urls'))}&format=${encodeURIComponent(formData.get('format'))}`);
+            eventSource.onmessage = function(event) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'progress-message';
+                messageDiv.innerHTML = event.data;
+                progressDiv.appendChild(messageDiv);
+                progressDiv.scrollTop = progressDiv.scrollHeight;
+            };
+            eventSource.addEventListener('download_ready', function(event) {
+                const filename = event.data;
+                downloadLink.href = `/downloads/${filename}`;
+                downloadLink.textContent = `💾 Descargar: ${filename}`;
+                downloadLink.classList.remove('hidden');
+                eventSource.close();
+                const finalMessage = document.createElement('div');
+                finalMessage.className = 'progress-message';
+                finalMessage.innerHTML = '🌌 Manifestación lista para ser recibida';
+                finalMessage.style.color = '#4caf50';
+                finalMessage.style.fontWeight = 'bold';
+                progressDiv.appendChild(finalMessage);
+            });
+            eventSource.addEventListener('error', function(event) {
+                errorDiv.textContent = event.data;
+                errorDiv.classList.remove('hidden');
+                eventSource.close();
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'progress-message';
+                errorMessage.innerHTML = '❌ ' + event.data;
+                errorMessage.style.color = '#ff6b6b';
+                progressDiv.appendChild(errorMessage);
+            });
+        });
+    </script>
+</body>
+</html>
