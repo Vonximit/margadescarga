@@ -42,6 +42,13 @@ Cada uno tiene una **función emocional**, **frecuencia resonante** y puede usar
 
 ## 📁 Estructura del repo
 
+MargaDescarga/
+│
+├── index.html # Interfaz principal
+├── styles.css # Estilos (integrados en el HTML actual)
+├── README.md # Este archivo
+├── backend/ # (opcional) Backend FastAPI o Flask con endpoint de descarga
+└── symbols.json # Diccionario simbólico Margalíquido
 
 ---
 
